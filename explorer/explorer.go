@@ -10,16 +10,16 @@ import (
 )
 
 const (
-	port string = ":4000"
+	port        string = ":4000"
 	templateDir string = "explorer/templates/"
 )
+
 var templates *template.Template
 
 type homeData struct {
 	PageTitle string
-	Blocks []*blockchain.Block
+	Blocks    []*blockchain.Block
 }
-
 
 func home(rw http.ResponseWriter, r *http.Request) {
 	data := homeData{"Home", blockchain.GetBlockChain().AllBlcok()}
@@ -36,14 +36,14 @@ func add(rw http.ResponseWriter, r *http.Request) {
 		blockchain.GetBlockChain().AddBlcok(data)
 		http.Redirect(rw, r, "/", http.StatusPermanentRedirect)
 	}
-	
+
 }
 
-func Start() {
+func Start(port int) {
 	templates = template.Must(template.ParseGlob(templateDir + "pages/*.gohtml"))
 	templates = template.Must(templates.ParseGlob(templateDir + "partials/*.gohtml"))
 	http.HandleFunc("/", home)
 	http.HandleFunc("/add", add)
-	fmt.Printf("Listening on http:localhost %s\n", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	fmt.Printf("Explorer is Listening on http://localhost %d\n", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
