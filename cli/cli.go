@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/endyd9/nomadcoin/explorer"
 	"github.com/endyd9/nomadcoin/rest"
@@ -15,7 +16,7 @@ func usage() {
 	fmt.Printf("go run main.go 'mode': Chose between 'html' and 'rest'\n")
 	fmt.Printf("-port=portNum: Set the PORT of the Server it's can skipped\n\n")
 	fmt.Printf("or if you want run both servers choose 'both' then port is -restPort=portNum -htmlPort=portNum \n\n")
-	os.Exit(0)
+	runtime.Goexit()
 }
 
 func parsePort() (int, int) {
